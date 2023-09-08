@@ -2,7 +2,7 @@ NAME			= philo
 
 CC				= cc 
 
-FLAGS			= -Wall -Wextra -Werror -g
+FLAG			= -Wall -Wextra -Werror -g
 
 C_FILE		= main.c \
 						philo_utils.c \
@@ -10,6 +10,7 @@ C_FILE		= main.c \
 						philo_fct2.c \
 						routine.c \
 						dead.c \
+						parsing.c \
 
 SRC_DIR		=	./core/
 
@@ -19,12 +20,15 @@ SRC			=	$(addprefix $(SRC_DIR),$(C_FILE))
 
 OBJ			=	$(SRC:.c=.o)
 
+$(NAME): $(OBJ)
+	@echo "\033[0;33m\nCOMPILING PHILOSOPHER...\n"
+	$(CC) $(FLAG) $(OBJ) -o $(NAME)
+	@echo "\033[0;33m./philo created\n"
+
 all : $(NAME)
 
-$(NAME):  $(OBJ)
-	@echo "\033[0;33m\nCOMPILING PHILOSOPHER...\n"
-	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
-	@echo "\033[0;33m./philo created\n"
+.c.o:
+	$(CC) $(FLAG) -c $< -o $@
 
 clean:
 	@echo "\033[1;32mDeleting philo object..."

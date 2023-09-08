@@ -15,6 +15,7 @@ typedef struct	s_rules
 	int							time_to_eat;
 	int							time_to_sleep;
 	int							nb_x_eat; //option
+	int							nb_philo_x_eat;
 	int							end_b;//
 	pthread_mutex_t				write;
 	pthread_mutex_t				end;
@@ -39,13 +40,18 @@ typedef struct s_data
 	t_philo *philo;
 	pthread_t *th_id;
 	t_rules rules;
-	pthread_mutex_t	*mutex_id;
+	// pthread_mutex_t	*mutex_id;
 } t_data;
 
 int   ft_strlen(char *str);
 void	ft_strerror(char *str);
 int   ft_atoi(char *str);
 void  ft_bzero(void *str, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_itoa(int nb);
+void	free_array(char **tab);
+int		parsing(int ac, char **av);
+
 
 long	ft_time();
 int		is_dead(t_philo	*philo);

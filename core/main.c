@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/08 14:48:33 by terussar          #+#    #+#             */
+/*   Updated: 2023/09/08 17:55:26 by terussar         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/philosopher.h"
 
 void	initialize_arg(t_data *data, char **av, int ac)
@@ -37,7 +49,8 @@ void	*initialize_thread(t_data *data)
 	i = 0;
 	if (ft_malloc_thread(data) == 1)
 		return (NULL);
-	pthread_mutex_init(&data->rules.write, NULL);
+	pthread_mutex_init(&(data->rules.write), NULL);
+	data->rules.nb_philo_x_eat = 0;
 	tmp = ft_time();
 	while (i < data->rules.nb_philo)
 	{
@@ -77,13 +90,14 @@ int	main(int ac, char **av)
 {
 	t_data	data;
 
-	if (ac != 5 && ac != 6)
-		ft_strerror("error\nwrong number of arguments (5 or 6 required)\n");
-	else
+	ft_bzero(&data, sizeof(data));
+	if (parsing(ac, av) == 0)
 	{
-		ft_bzero(&data, sizeof(data));
 		initialize_arg(&data, av, ac);
 		initialize_thread(&data);
 	}
+	else
+		ft_strerror("Error\nwrong number of arguments or non-unsigned integer\n");
+	free(data.philo);
 	return (0);
 }

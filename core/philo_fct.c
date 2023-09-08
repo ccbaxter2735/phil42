@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_fct.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccbaxter <ccbaxter@student.42.fr>          +#+  +:+       +#+        */
+/*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:50:52 by terussar          #+#    #+#             */
-/*   Updated: 2023/09/07 21:49:49 by ccbaxter         ###   ########.fr       */
+/*   Updated: 2023/09/08 16:41:59 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,10 @@ int	ft_eat(t_philo *philo1)
 	if (is_dead(philo1) == 0)
 	{
 		pthread_mutex_lock(&(philo1->fork_l));
+		take_time_and_str(philo1, "has take a fork");
 		pthread_mutex_lock(philo1->fork_r);
 		take_time_and_str(philo1, "has take a fork");
-
-		take_time_and_str(philo1, "has take a fork");
-
 		take_time_and_str(philo1, "is eating");
-
 		ft_usleep(philo1, philo1->r_philo->time_to_eat);
 		pthread_mutex_unlock(&(philo1->fork_l));
 		pthread_mutex_unlock(philo1->fork_r);
@@ -79,6 +76,7 @@ int	ft_think(t_philo *philo1)
 	if (is_dead(philo1) == 0)
 	{
 		take_time_and_str(philo1, "is thinking");
+		ft_usleep(philo1, 50);
 		return (0);
 	}
 	return (1);
