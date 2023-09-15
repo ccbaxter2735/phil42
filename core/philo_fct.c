@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_fct.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccbaxter <ccbaxter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:50:52 by terussar          #+#    #+#             */
-/*   Updated: 2023/09/08 16:41:59 by terussar         ###   ########.fr       */
+/*   Updated: 2023/09/15 23:56:18 by ccbaxter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	take_time_and_str(t_philo *philo, char *str)
 	long	time;
 
 	time = -1;
-	time = ft_time() - philo->start_time;
+	time = ft_time() - philo->r_philo->start_time;
 	if (time > 0)
 	{
 		pthread_mutex_lock(&philo->r_philo->write);
@@ -54,7 +54,15 @@ int	ft_eat(t_philo *philo1)
 		pthread_mutex_unlock(philo1->fork_r);
 		philo1->last_time_eat = ft_time();
 		if (philo1->nb_meal != -1)
+		{
 			philo1->nb_meal--;
+			if (philo1->nb_meal == 0)
+			{
+				philo1->r_philo->nb_philo_x_eat++;
+				take_time_and_str(philo1, "is thinking");
+				ft_usleep(philo1, 10000);
+			}
+		}
 		return (0);
 	}
 	return (1);
@@ -73,10 +81,16 @@ int	ft_sleep(t_philo *philo1)
 
 int	ft_think(t_philo *philo1)
 {
+	int time_think;
+	
+	if (philo1->r_philo->time_to_eat >= philo1->r_philo->time_to_sleep)
+    	time_think = (philo1->r_philo->time_to_eat - philo1->r_philo->time_to_sleep);
+	else
+		time_think = 0;
 	if (is_dead(philo1) == 0)
 	{
 		take_time_and_str(philo1, "is thinking");
-		ft_usleep(philo1, 50);
+		ft_usleep(philo1, time_think);
 		return (0);
 	}
 	return (1);

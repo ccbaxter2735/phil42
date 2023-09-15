@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccbaxter <ccbaxter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:48:33 by terussar          #+#    #+#             */
-/*   Updated: 2023/09/08 17:55:26 by terussar         ###   ########.fr       */
+/*   Updated: 2023/09/15 22:46:03 by ccbaxter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,15 @@ int	ft_malloc_thread(t_data *data)
 void	*initialize_thread(t_data *data)
 {
 	int		i;
-	long	tmp;
+	// long	tmp;
 
 	i = 0;
 	if (ft_malloc_thread(data) == 1)
 		return (NULL);
 	pthread_mutex_init(&(data->rules.write), NULL);
 	data->rules.nb_philo_x_eat = 0;
-	tmp = ft_time();
 	while (i < data->rules.nb_philo)
 	{
-		data->philo[i].start_time = tmp;
 		data->philo[i].nb_meal = data->rules.nb_x_eat;
 		data->philo[i].id = i + 1;
 		data->philo[i].r_philo = &data->rules;
@@ -62,6 +60,7 @@ void	*initialize_thread(t_data *data)
 		i++;
 	}
 	i = 0;
+	data->rules.start_time = ft_time();
 	while (i < data->rules.nb_philo)
 	{
 		if (i == data->rules.nb_philo - 1)

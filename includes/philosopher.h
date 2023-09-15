@@ -17,6 +17,7 @@ typedef struct	s_rules
 	int							nb_x_eat; //option
 	int							nb_philo_x_eat;
 	int							end_b;//
+	long						start_time;
 	pthread_mutex_t				write;
 	pthread_mutex_t				end;
 }	t_rules;
@@ -28,7 +29,7 @@ typedef	struct	s_philo
 	int	tab_fork[2];
 	pthread_mutex_t	*fork_r;
 	pthread_mutex_t	fork_l;
-	long	start_time;
+	
 	long	last_time_eat;
 	long	time;
 	t_rules *r_philo;
