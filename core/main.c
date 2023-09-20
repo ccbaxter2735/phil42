@@ -6,7 +6,7 @@
 /*   By: ccbaxter <ccbaxter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:48:33 by terussar          #+#    #+#             */
-/*   Updated: 2023/09/15 22:46:03 by ccbaxter         ###   ########.fr       */
+/*   Updated: 2023/09/20 03:56:03 by ccbaxter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,21 @@ int	ft_malloc_thread(t_data *data)
 	data->th_id = malloc(sizeof(pthread_t) * data->rules.nb_philo);
 	if (!data->th_id)
 		return (1);
-	// data->mutex_id = malloc(sizeof(pthread_mutex_t) * data->rules.nb_philo);
-	// if (!data->mutex_id)
-	// 	return (1);
 	ft_bzero(data->th_id, (sizeof(pthread_t) * data->rules.nb_philo));
 	ft_bzero(data->philo, (sizeof(t_philo) * data->rules.nb_philo));
-	// ft_bzero(data->mutex_id, (sizeof(pthread_mutex_t) * data->rules.nb_philo));
 	return (0);
 }
 
-void	*initialize_thread(t_data *data)
+int	initialize_thread(t_data *data)
 {
 	int		i;
 	// long	tmp;
 
 	i = 0;
 	if (ft_malloc_thread(data) == 1)
-		return (NULL);
+		return (1);
 	pthread_mutex_init(&(data->rules.write), NULL);
+	pthread_mutex_init(&(data->rules.end), NULL);
 	data->rules.nb_philo_x_eat = 0;
 	while (i < data->rules.nb_philo)
 	{
@@ -68,8 +65,8 @@ void	*initialize_thread(t_data *data)
 		else
 			data->philo[i].fork_r = &data->philo[i + 1].fork_l;
 		if (pthread_create(&data->th_id[i], NULL,
-				&threading, &data->philo[i]) != 0)
-			ft_strerror("error\nfailed to create thread\n");
+				threading, &data->philo[i]))
+			return (1);
 		i++;
 	}
 	i = 0;
@@ -82,7 +79,8 @@ void	*initialize_thread(t_data *data)
 		i++;
 	}
 	pthread_mutex_destroy(&data->rules.write);
-	return (NULL);
+	pthread_mutex_destroy(&data->rules.end);
+	return (0);
 }
 
 int	main(int ac, char **av)
@@ -93,10 +91,15 @@ int	main(int ac, char **av)
 	if (parsing(ac, av) == 0)
 	{
 		initialize_arg(&data, av, ac);
-		initialize_thread(&data);
+		if (initialize_thread(&data))
+		{
+
+			return (1);
+		}
 	}
 	else
 		ft_strerror("Error\nwrong number of arguments or non-unsigned integer\n");
 	free(data.philo);
+	free(data.th_id);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ccbaxter <ccbaxter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:50:52 by terussar          #+#    #+#             */
-/*   Updated: 2023/09/15 23:56:18 by ccbaxter         ###   ########.fr       */
+/*   Updated: 2023/09/20 05:42:38 by ccbaxter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	take_time_and_str(t_philo *philo, char *str)
 
 	time = -1;
 	time = ft_time() - philo->r_philo->start_time;
-	if (time > 0)
+	if (time >= 0)
 	{
 		pthread_mutex_lock(&philo->r_philo->write);
 		printf("%ld %d %s\n", time, philo->id, str);
@@ -60,7 +60,6 @@ int	ft_eat(t_philo *philo1)
 			{
 				philo1->r_philo->nb_philo_x_eat++;
 				take_time_and_str(philo1, "is thinking");
-				ft_usleep(philo1, 10000);
 			}
 		}
 		return (0);

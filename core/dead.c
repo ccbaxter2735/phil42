@@ -6,7 +6,7 @@
 /*   By: ccbaxter <ccbaxter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 14:04:30 by terussar          #+#    #+#             */
-/*   Updated: 2023/09/15 22:46:59 by ccbaxter         ###   ########.fr       */
+/*   Updated: 2023/09/20 04:00:46 by ccbaxter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	is_dead(t_philo	*philo)
 		return (0);
 	else
 	{
-		pthread_mutex_lock(&philo->r_philo->end);
-		philo->r_philo->end_b = 1;
-		pthread_mutex_unlock(&philo->r_philo->end);
+		pthread_mutex_lock(&(philo->r_philo->end));
 		take_time_and_str(philo, "is dead");
-		return (1);
+		philo->r_philo->end_b = 1;
+		pthread_mutex_unlock(&(philo->r_philo->end));
 	}
+	return (1);
 }
